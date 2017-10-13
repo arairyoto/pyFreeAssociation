@@ -46,4 +46,4 @@ And in FreeAssociation, many index listed below are defined and calculated. The 
 Just `import FreeAssocation` and declare of use like `fa = FreeAssociation()`. Then you can use many kind of method defined in FreeAssociation Object which you can find in FreeAssociation.py file.
 
 ## TODO
-Now in FreeAssociation Object, a few methods are defined and not all informations are extracted from the source. The index such as QFR, QPR, etc. are not used. However the sqlite database contains as much data as the source, We can extract some data and use them for some purpose.
+Now in FreeAssociation Object, a few methods are defined and not all informations are extracted from the source. The index such as QFR, QPR, etc. are not used. However the sqlite database contains as much data as the source, We can extract some data and use them for some purpose. And also I'm now begging the developer of Japanese Associative Concept Dictionary to give me the data. After I get the data I will bind them to this system so that you can find both English and Japanese associations.
