@@ -2,21 +2,24 @@ import os
 import sys
 import sqlite3
 
+DBNAME = 'free_associate.db'
+TABLENAME = 'examples'
+
 class FreeAssociation:
     def __init__(self, dbname):
         # connect to db
-        self.dbname = dbname
+        self.dbname = DBNAME
         conn = sqlite3.connect(self.dbname)
         self.c = conn.cursor()
 
     # 全ての単語を返します
     def all_words(self):
-        sql = 'select TARGET from examples'
+        sql = 'select TARGET from '+TABLENAME
         return list(set([row[0] for row in self.c.execute(sql)]))
 
     # 全てのキューを返します
     def all_normed_words(self):
-        sql = 'select CUE from examples'
+        sql = 'select CUE from '+TABLENAME
         return list(set([row[0] for row in self.c.execute(sql)]))
 
     # キューとして定義されているかどうかを返します
@@ -35,7 +38,7 @@ class FreeAssociation:
             words = next_words
             next_words = []
             for word in words:
-                sql = 'select TARGET from examples where CUE = "'+word+'"'
+                sql = 'select TARGET from '+TABLENAME+' where CUE = "'+word+'"'
                 for row in self.c.execute(sql):
                     next_words.append(row[0])
             next_words = list(set(next_words))
@@ -50,7 +53,7 @@ class FreeAssociation:
             words = next_words
             next_words = []
             for word in words:
-                sql = 'select TARGET from examples where CUE = "'+word+'"'
+                sql = 'select TARGET from '+TABLENAME+' where CUE = "'+word+'"'
                 for row in self.c.execute(sql):
                     if self.is_normed(row[0]):
                         next_words.append(row[0])
@@ -63,7 +66,7 @@ class FreeAssociation:
     # 連想関係の強度を返します
     def cue_to_target_strength(self, cue, target):
         try:
-            sql = 'select FSG from examples where CUE = "'+cue+'" and TARGET = "'+target+'"'
+            sql = 'select FSG from '+TABLENAME+' where CUE = "'+cue+'" and TARGET = "'+target+'"'
             res = self.c.execute(sql)
             return list(res)[0][0]
         except:
@@ -71,15 +74,15 @@ class FreeAssociation:
 
     # 連想
     def mediators(self, cue, target):
-        sql = 'select TARGET from examples where CUE = "'+cue+'"'
+        sql = 'select TARGET from '+TABLENAME+' where CUE = "'+cue+'"'
         cue_set = set([ row[0] for row in self.c.execute(sql)])
-        sql = 'select CUE from examples where TARGET = "'+target+'"'
+        sql = 'select CUE from '+TABLENAME+' where TARGET = "'+target+'"'
         target_set = set([ row[0] for row in self.c.execute(sql)])
 
         mediator_set = cue_set & target_set
 
         try:
-            sql = 'select MSG from examples where CUE = "'+cue+'" and TARGET = "'+target+'"'
+            sql = 'select MSG from '+TABLENAME+' where CUE = "'+cue+'" and TARGET = "'+target+'"'
             res = self.c.execute(sql)
             MSG = list(res)[0][0]
         except:
@@ -88,15 +91,15 @@ class FreeAssociation:
         return list(mediator_set), MSG
 
     def overlaps(self, cue, target):
-        sql = 'select TARGET from examples where CUE = "'+cue+'"'
+        sql = 'select TARGET from '+TABLENAME+' where CUE = "'+cue+'"'
         cue_set = set([ row[0] for row in self.c.execute(sql)])
-        sql = 'select TARGET from examples where CUE = "'+target+'"'
+        sql = 'select TARGET from '+TABLENAME+' where CUE = "'+target+'"'
         target_set = set([ row[0] for row in self.c.execute(sql)])
 
         overlap_set = cue_set & target_set
 
         try:
-            sql = 'select OSG from examples where CUE = "'+cue+'" and TARGET = "'+target+'"'
+            sql = 'select OSG from '+TABLENAME+' where CUE = "'+cue+'" and TARGET = "'+target+'"'
             res = self.c.execute(sql)
             OSG = list(res)[0][0]
         except:
