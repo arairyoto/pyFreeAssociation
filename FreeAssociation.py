@@ -6,7 +6,7 @@ DBNAME = 'free_associate.db'
 TABLENAME = 'examples'
 
 class FreeAssociation:
-    def __init__(self, dbname):
+    def __init__(self):
         # connect to db
         self.dbname = DBNAME
         conn = sqlite3.connect(self.dbname)
@@ -118,7 +118,7 @@ class FreeAssociation:
 # EXAMPLES
 if __name__=='__main__':
 
-    fa = FreeAssociation('free_associate.db')
+    fa = FreeAssociation()
 
     cue = 'adult'
     target = 'child'
