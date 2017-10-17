@@ -72,6 +72,14 @@ class FreeAssociation:
         except:
             return 0
 
+    def indicator(self, indicator_name, cue, target):
+        try:
+            sql = 'select '+indicator_name+' from '+TABLENAME+' where CUE = "'+cue+'" and TARGET = "'+target+'"'
+            res = self.c.execute(sql)
+            return list(res)[0][0]
+        except:
+            return 0
+
     # 連想
     def mediators(self, cue, target):
         sql = 'select TARGET from '+TABLENAME+' where CUE = "'+cue+'"'
